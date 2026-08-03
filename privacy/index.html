@@ -1,0 +1,165 @@
+<!doctype html>
+<!--
+  Beenly privacy policy: the hosted page required by the Google Play listing
+  and the Data safety form (T-0014).
+
+  SOURCE OF TRUTH: docs/PRIVACY_POLICY.md in the kmka330/been repo. This file
+  is the rendered copy that gets published; when the markdown changes, this
+  changes in the same commit (mirrored manually into this repo).
+
+  HOW IT IS HOSTED: this repo (kmka330/beenly-site) is public and deployed via
+  Cloudflare Pages, serving https://beenly.me/privacy. Superseded by T-0042
+  (was: kmka330.github.io/beenly-privacy, the v1.0 GitHub Pages stopgap).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy: Beenly</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+        font: 16px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+      h2 { margin-top: 2.5rem; font-size: 1.25rem; }
+      .meta { color: #666; font-size: 0.9rem; margin-top: 0; }
+      table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+      th, td { border: 1px solid #8884; padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+      code { font-size: 0.9em; }
+      @media (prefers-color-scheme: dark) { .meta { color: #aaa; } }
+    </style>
+  </head>
+  <body>
+    <h1>Privacy Policy: Beenly</h1>
+    <p class="meta">
+      Effective date: 2026-07-27 ·
+      Last updated: 2026-07-27 ·
+      Contact: <a href="mailto:kmka330@pm.me">kmka330@pm.me</a>
+    </p>
+
+    <h2>Short version</h2>
+    <p>
+      Beenly keeps your travel data on your device. There is no server, there are no accounts,
+      and we do not sell or share your data. There is no backend to send it to. The only things
+      that leave your device are: (1) anonymous crash reports, so we can fix bugs, and (2) a
+      handful of anonymous, opt-out-able usage counters. Neither ever includes which countries
+      you have marked, your notes, or anything else that identifies you or your travel history.
+    </p>
+
+    <h2>Who we are</h2>
+    <p>
+      Beenly is developed and published by an individual developer. For any privacy question,
+      correction, or complaint, write to <a href="mailto:kmka330@pm.me">kmka330@pm.me</a>, the
+      same address listed as the developer contact on Google Play.
+    </p>
+
+    <h2>What data the app has, and where it lives</h2>
+    <p>
+      Your marked countries (status, optional visit date, optional notes) and your app settings
+      are stored <strong>only in a local database on your device</strong>. Beenly is local-first
+      by design: it has no backend, so there is nothing to sync, no account to create, and no
+      server-side copy of your data.
+    </p>
+    <p>
+      Export/import lets you write that data to a file and read it back, entirely under your
+      control. The app never uploads it anywhere on your behalf; the exported file goes wherever
+      you send it via the Android share sheet.
+    </p>
+    <p>
+      The app does not request or use location permissions. It never accesses your device's GPS,
+      contacts, photos, or any other personal data store.
+    </p>
+
+    <h2>Crash reporting (Sentry)</h2>
+    <p>
+      Beenly uses <a href="https://sentry.io">Sentry</a> to catch crashes and errors so they can
+      be fixed. When the app crashes or hits an unexpected error, a report is sent containing:
+      the error type and message, a stack trace, device/OS/app-version info, and a small number
+      of non-personal breadcrumbs (e.g. "user navigated from map to passport").
+    </p>
+    <p>
+      <strong>Never included:</strong> which countries you have marked or their status, your
+      notes, your visit dates, your device's location, or anything that identifies you
+      personally. This is enforced two ways: the app never attaches place data to crash reports
+      in the first place, and every outgoing report additionally passes through a filter that
+      strips any field that looks like place or location data.
+    </p>
+    <p>
+      <strong>Legal basis (GDPR Art. 6(1)(f)):</strong> legitimate interest in keeping the app
+      working. Because crash reporting is the minimum needed to ship a reliable app, not a
+      marketing or analytics tool, it <strong>stays on regardless of the usage-stats opt-out
+      below</strong>.
+    </p>
+    <p>
+      Sentry acts as a data processor. Its own privacy terms are at
+      <a href="https://sentry.io/privacy/">https://sentry.io/privacy/</a>.
+    </p>
+
+    <h2>Anonymous usage events (opt-out)</h2>
+    <p>
+      Separately from crash reports, the app can record that one of exactly five things happened.
+      This is the complete list. There is no other event, and the app cannot be made to send an
+      arbitrary one (this is enforced in code, not just in policy):
+    </p>
+    <table>
+      <thead><tr><th>Event</th><th>What it tells us</th></tr></thead>
+      <tbody>
+        <tr><td><code>app_first_open</code></td><td>the app was opened for the first time</td></tr>
+        <tr><td><code>country_marked</code></td><td>a country's status changed: <strong>only</strong> whether it became visited / want-to-go / lived; never which country</td></tr>
+        <tr><td><code>passport_viewed</code></td><td>the Passport tab was opened</td></tr>
+        <tr><td><code>export_done</code></td><td>an export finished</td></tr>
+        <tr><td><code>import_done</code></td><td>an import finished</td></tr>
+      </tbody>
+    </table>
+    <p>
+      None of these carry a place id, place name, note text, date, or any other content. No user
+      id, email, or other personal identifier is attached.
+    </p>
+    <p>
+      <strong>This is opt-out.</strong> The setting is on by default; turning it off in
+      <strong>Settings → Privacy</strong> stops all five events immediately and does not affect
+      crash reporting.
+    </p>
+    <p><strong>Legal basis:</strong> legitimate interest, with an unconditional opt-out in the app.</p>
+
+    <h2>Children</h2>
+    <p>
+      Beenly is not directed at children under 13 and collects no personal data that could
+      identify a child. There is no account, no profile, and no user-to-user communication.
+    </p>
+
+    <h2>Advertising</h2>
+    <p>
+      Beenly contains no advertising and no advertising SDKs. No data is shared with advertisers
+      or data brokers.
+    </p>
+
+    <h2>Data retention</h2>
+    <p>
+      Local data stays on your device until you delete it or uninstall the app. Crash reports and
+      the anonymous usage events are retained by Sentry under its default retention window
+      (90 days) and are not linked to you.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>Because your data lives only on your device:</p>
+    <ul>
+      <li><strong>Access &amp; portability:</strong> the Export feature gives you a complete copy of your data at any time, in a documented JSON format.</li>
+      <li><strong>Deletion:</strong> uninstalling the app deletes your local data. You may also clear the app's storage from Android Settings.</li>
+      <li><strong>No account, no server-side profile:</strong> there is nothing for us to look up, because we do not hold your data. It never left your device except as the scrubbed crash/usage data described above.</li>
+      <li>For anything concerning the crash/usage data described above, contact <a href="mailto:kmka330@pm.me">kmka330@pm.me</a> and it will be handled within 30 days.</li>
+    </ul>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      Anything that changes what data is collected (a new telemetry event, an account/sync
+      phase, ads, or a paywall that touches personal data) requires updating this policy and the
+      Play Data safety form in the same release. The "Last updated" date above tracks the current
+      version.
+    </p>
+  </body>
+</html>

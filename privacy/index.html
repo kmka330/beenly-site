@@ -3,13 +3,19 @@
   beenly privacy policy: the hosted page required by the Google Play listing
   and the Data safety form (T-0014).
 
-  SOURCE OF TRUTH: docs/PRIVACY_POLICY.md in the kmka330/been repo. This file
-  is the rendered copy that gets published; when the markdown changes, this
-  changes in the same commit (mirrored manually into this repo).
+  SOURCE OF TRUTH: docs/PRIVACY_POLICY.md in this repo (kmka330/been). This
+  file is the rendered copy that gets published; when the markdown changes,
+  this changes in the same commit.
 
-  HOW IT IS HOSTED: this repo (kmka330/beenly-site) is public and deployed via
-  Cloudflare Pages, serving https://beenly.me/privacy. Superseded by T-0042
-  (was: kmka330.github.io/beenly-privacy, the v1.0 GitHub Pages stopgap).
+  HOW IT IS HOSTED: this repo is private, so the rendered page lives in a
+  separate PUBLIC repo, kmka330/beenly-site, deployed via Cloudflare Pages and
+  served at https://beenly.me/privacy/ (T-0042; supersedes the v1.0 GitHub
+  Pages stopgap at kmka330.github.io/beenly-privacy).
+
+  PUBLISHING IS A SEPARATE, MANUAL STEP: editing this file does NOT update the
+  live page. Copy it to beenly-site/privacy/index.html and push, every time.
+  A live policy that contradicts the app's actual behaviour is a Play review
+  rejection -- see docs/RELEASE_CHECKLIST.md section 4a.
 -->
 <html lang="en">
   <head>
@@ -37,7 +43,7 @@
     <h1>Privacy Policy: beenly</h1>
     <p class="meta">
       Effective date: 2026-07-27 ·
-      Last updated: 2026-07-27 ·
+      Last updated: 2026-08-10 ·
       Contact: <a href="mailto:kmka330@pm.me">kmka330@pm.me</a>
     </p>
 
@@ -70,8 +76,36 @@
       you send it via the Android share sheet.
     </p>
     <p>
-      The app does not request or use location permissions. It never accesses your device's GPS,
-      contacts, photos, or any other personal data store.
+      The app never accesses your contacts or any other personal data store. The one
+      exception: if you use the <strong>Share cards</strong> feature (beenly Pro) to create a
+      map/stats image and tap <strong>Save</strong>, the app writes that newly generated image
+      to your device's Photos &mdash; it only ever writes an image it just created; it never
+      reads, lists, or otherwise accesses any photo or video already on your device.
+    </p>
+    <p>
+      <strong>Location (optional, off by default):</strong> if you turn on
+      <strong>Settings &rarr; Privacy &rarr; "Nudge me to mark countries"</strong>, the app asks
+      Android for approximate location access &mdash; that's the only kind of location access
+      beenly ever requests. (Android's permission dialog may still show a "Precise" option next
+      to "Approximate"; that's because the location library beenly uses declares support for
+      precise location in the app's permissions, but beenly's own code never asks for it and
+      never uses it.) While this is on, it checks your approximate location once each time you
+      open the app (at most once every 12 hours) to see whether you're somewhere you haven't
+      marked yet, and shows a one-time suggestion to mark it. That location value is held in
+      memory for a moment to work out which country you're in, then discarded immediately
+      &mdash; <strong>the location itself (your coordinates) is never written to storage, never
+      included in an export, never sent over the network, and never attached to a crash report
+      or a usage event.</strong>
+    </p>
+    <p>
+      If you dismiss a suggestion instead of marking it, the app remembers <strong>only which
+      country you dismissed and until when</strong> &mdash; stored locally on your device so it
+      doesn't ask about that same country again for a while. That one country id is the only
+      thing this feature ever stores; it is never included in an export, never sent over the
+      network, and never attached to a crash report or a usage event either. This setting is off
+      until you turn it on, and the whole feature works fully offline (no location is ever sent
+      to us or to Google's geocoding services &mdash; resolution happens on-device against a
+      bundled offline map dataset).
     </p>
 
     <h2>Crash reporting (Sentry)</h2>
@@ -101,7 +135,7 @@
 
     <h2>Anonymous usage events (opt-out)</h2>
     <p>
-      Separately from crash reports, the app can record that one of exactly five things happened.
+      Separately from crash reports, the app can record that one of exactly fourteen things happened.
       This is the complete list. There is no other event, and the app cannot be made to send an
       arbitrary one (this is enforced in code, not just in policy):
     </p>
@@ -113,15 +147,24 @@
         <tr><td><code>passport_viewed</code></td><td>the Passport tab was opened</td></tr>
         <tr><td><code>export_done</code></td><td>an export finished</td></tr>
         <tr><td><code>import_done</code></td><td>an import finished</td></tr>
+        <tr><td><code>badge_earned</code></td><td>a milestone badge was earned: <strong>only</strong> which badge (e.g. "10 countries"); never which country(ies) earned it</td></tr>
+        <tr><td><code>paywall_viewed</code></td><td>the beenly Pro screen was opened — no payload at all</td></tr>
+        <tr><td><code>purchase_started</code></td><td>a purchase was started: <strong>only</strong> whether it's a subscription or a one-time (lifetime) purchase; never which specific plan (e.g. monthly vs. yearly), a price, or a currency</td></tr>
+        <tr><td><code>purchase_completed</code></td><td>a purchase finished successfully: <strong>only</strong> the same subscription/one-time distinction; never which specific plan, a price, or a currency</td></tr>
+        <tr><td><code>restore_completed</code></td><td>a "restore purchases" check finished: <strong>only</strong> whether an active purchase was found; never which product</td></tr>
+        <tr><td><code>region_marked</code></td><td>a region's status changed (beenly Pro): <strong>only</strong> whether it became visited / want-to-go / lived; never which region or which country it belongs to</td></tr>
+        <tr><td><code>goal_completed</code></td><td>an exploration goal was reached: <strong>only</strong> the target country count (e.g. "5"); never which country(ies) counted toward it, never the baseline, never the deadline</td></tr>
+        <tr><td><code>share_card_created</code></td><td>a share card image was created (beenly Pro): <strong>only</strong> which of the three templates; never any stats value, place, or continent name shown on it, and never which aspect ratio was picked</td></tr>
+        <tr><td><code>wrapped_viewed</code></td><td>the yearly "Travel Wrapped" recap was opened (beenly Pro teaser): <strong>only</strong> the recapped year (e.g. "2026"); never a country count, continent name, month, or which slide was reached</td></tr>
       </tbody>
     </table>
     <p>
-      None of these carry a place id, place name, note text, date, or any other content. No user
-      id, email, or other personal identifier is attached.
+      None of these carry a place id, place name, note text, date, price, currency, or any other
+      content. No user id, email, or other personal identifier is attached.
     </p>
     <p>
       <strong>This is opt-out.</strong> The setting is on by default; turning it off in
-      <strong>Settings → Privacy</strong> stops all five events immediately and does not affect
+      <strong>Settings → Privacy</strong> stops all fourteen events immediately and does not affect
       crash reporting.
     </p>
     <p><strong>Legal basis:</strong> legitimate interest, with an unconditional opt-out in the app.</p>

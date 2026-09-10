@@ -7,6 +7,12 @@
   file is the rendered copy that gets published; when the markdown changes,
   this changes in the same commit.
 
+  THE POLICY TEXT BELOW IS VERBATIM. The 2026-09 redesign changed the page
+  chrome only -- typography, layout, the contents rail, the reveal on scroll --
+  and moved not one word of the policy itself. Anything inside <main> still
+  matches docs/PRIVACY_POLICY.md heading for heading and sentence for sentence.
+  Keep it that way: restyle freely, but never reword here.
+
   HOW IT IS HOSTED: this repo is private, so the rendered page lives in a
   separate PUBLIC repo, kmka330/beenly-site, deployed via Cloudflare Pages and
   served at https://beenly.me/privacy/ (T-0042). This is the only host: the
@@ -19,32 +25,237 @@
   rejection -- see docs/RELEASE_CHECKLIST.md section 4a.
 -->
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Privacy Policy: beenly</title>
-    <style>
-      :root { color-scheme: light dark; }
-      body {
-        max-width: 46rem;
-        margin: 0 auto;
-        padding: 2rem 1.25rem 4rem;
-        font: 16px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-      h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
-      h2 { margin-top: 2.5rem; font-size: 1.25rem; }
-      .meta { color: #666; font-size: 0.9rem; margin-top: 0; }
-      table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-      th, td { border: 1px solid #8884; padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
-      code { font-size: 0.9em; }
-      @media (prefers-color-scheme: dark) { .meta { color: #aaa; } }
-    </style>
-  </head>
-  <body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy: beenly</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@700;800&display=swap">
+<style>
+:root{
+  --plum:#33132E; --deep:#1B0A18; --cream:#FFF3E2; --sand:#E8CBA8;
+  --amber:#F5A63C; --coral:#DE5B3E; --gold:#FFC46B;
+
+  --bg:#FFF7EE; --surface:#FFFFFF; --surface-2:#FFF3E2;
+  --ink:#33132E; --ink-2:#6B4A63; --ink-3:#9A7D93;
+  --line:rgba(51,19,46,.14); --line-2:rgba(51,19,46,.07);
+  --accent:#C6511F; --accent-ink:#FFF7EE;
+  --glass:rgba(255,247,238,.72); --shadow:0 1px 2px rgba(51,19,46,.06),0 12px 34px -14px rgba(51,19,46,.28);
+  --stamp:rgba(198,81,31,.55);
+  --maxw:1140px;
+
+  --e-out:cubic-bezier(.22,.61,.36,1);
+  --t-press:100ms; --t-hover:280ms; --t-reveal:640ms;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B0A18; --surface:#33132E; --surface-2:#3D1A37;
+    --ink:#FFF3E2; --ink-2:#D9BCCF; --ink-3:#A98CA2;
+    --line:rgba(255,243,226,.16); --line-2:rgba(255,243,226,.08);
+    --accent:#F5A63C; --accent-ink:#2A0F26;
+    --glass:rgba(27,10,24,.66); --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 44px -18px rgba(0,0,0,.75);
+    --stamp:rgba(245,166,60,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B0A18; --surface:#33132E; --surface-2:#3D1A37;
+  --ink:#FFF3E2; --ink-2:#D9BCCF; --ink-3:#A98CA2;
+  --line:rgba(255,243,226,.16); --line-2:rgba(255,243,226,.08);
+  --accent:#F5A63C; --accent-ink:#2A0F26;
+  --glass:rgba(27,10,24,.66); --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 44px -18px rgba(0,0,0,.75);
+  --stamp:rgba(245,166,60,.5);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:400 1rem/1.65 Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.1rem,4vw,2rem)}
+
+.aura{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(58vw 42vw at 84% -12%, color-mix(in srgb,var(--amber) 16%,transparent), transparent 62%),
+   radial-gradient(52vw 40vw at 2% 10%, color-mix(in srgb,var(--coral) 11%,transparent), transparent 64%)}
+header,main,footer{position:relative;z-index:2}
+
+/* ---- chrome: the same glass bar the homepage uses ---- */
+header{position:sticky;top:0;z-index:60;backdrop-filter:blur(18px) saturate(170%);
+  background:var(--glass);border-bottom:1px solid var(--line-2);
+  transition:background var(--t-hover) var(--e-out),backdrop-filter var(--t-hover) var(--e-out),
+    box-shadow var(--t-hover) var(--e-out),border-color var(--t-hover) var(--e-out)}
+header.scrolled{backdrop-filter:blur(28px) saturate(190%);border-bottom-color:transparent;
+  box-shadow:0 1px 0 var(--line-2),0 14px 30px -22px rgba(27,10,24,.5)}
+header::after{content:"";position:absolute;left:0;right:0;top:100%;height:14px;pointer-events:none;
+  opacity:0;transition:opacity var(--t-hover) var(--e-out);
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent),transparent)}
+header.scrolled::after{opacity:1}
+.nav{display:flex;align-items:center;gap:1rem;height:64px}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:Sora;font-weight:800;font-size:1.12rem;
+  letter-spacing:-.03em;text-decoration:none;color:inherit;
+  transition:transform var(--t-hover) var(--e-out)}
+.brand:hover{transform:scale(1.02)}
+.brand:active{transform:scale(.985);transition-duration:var(--t-press)}
+.brand img{width:30px;height:30px;border-radius:9px;box-shadow:0 2px 8px -2px rgba(0,0,0,.4)}
+.back{margin-left:auto;display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;
+  font:600 .88rem/1 Manrope;color:var(--ink-2);padding:.5rem .8rem;border-radius:10px;
+  border:1px solid var(--line);
+  transition:color var(--t-hover) var(--e-out),background var(--t-hover) var(--e-out),
+    border-color var(--t-hover) var(--e-out),transform var(--t-press) var(--e-out)}
+.back:hover{color:var(--ink);background:var(--line-2);border-color:var(--line)}
+.back:active{transform:scale(.97)}
+.back svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.4;
+  stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* ---- document shell ---- */
+main{padding:clamp(2.8rem,6vw,4.8rem) 0 clamp(3.5rem,8vw,6rem)}
+.doc-grid{display:grid;gap:clamp(2rem,4vw,3.4rem);align-items:start}
+@media(min-width:1000px){.doc-grid{grid-template-columns:15rem minmax(0,1fr)}}
+.doc{max-width:44rem;min-width:0}
+
+.stamp{display:inline-block;font:600 .68rem/1 Manrope;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--stamp);border:1.5px solid var(--stamp);padding:.44rem .72rem;border-radius:4px;
+  transform:rotate(-1.6deg);margin-bottom:1.4rem}
+
+.doc h1{font-family:Sora,Manrope,sans-serif;font-weight:800;margin:0;text-wrap:balance;
+  font-size:clamp(2.2rem,5vw,3.5rem);line-height:1.05;letter-spacing:-.038em}
+@media(min-width:1100px){.doc h1{letter-spacing:-.044em}}
+.doc .meta{margin:1.5rem 0 0;display:flex;flex-wrap:wrap;gap:.5rem;
+  font-size:.82rem;color:var(--ink-3);line-height:1.5}
+/* The source keeps this as one run of text with "·" separators; splitting it
+   into chips is done in script so the markup here stays verbatim. */
+/* inline-flex drops the whitespace between the label and the value, so the
+   gap has to be declared rather than typed */
+.doc .meta .bit{display:inline-flex;align-items:center;gap:.35rem;padding:.4rem .7rem;
+  border-radius:999px;border:1px solid var(--line-2);background:var(--surface);white-space:nowrap}
+.doc .meta .bit b{font-weight:600;color:var(--ink-2)}
+
+.doc h2{font-family:Sora,Manrope,sans-serif;font-weight:800;text-wrap:balance;
+  font-size:clamp(1.3rem,2.3vw,1.7rem);line-height:1.25;letter-spacing:-.022em;
+  margin:clamp(3rem,5vw,4rem) 0 1rem;padding-top:clamp(1.6rem,3vw,2.2rem);
+  border-top:1px solid var(--line-2)}
+.doc h2:first-of-type{margin-top:clamp(2.6rem,4vw,3.2rem)}
+.doc p{margin:0 0 1.05rem;color:var(--ink-2);line-height:1.72}
+.doc p:last-child{margin-bottom:0}
+.doc strong{color:var(--ink);font-weight:600}
+.doc a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent);
+  transition:text-decoration-color var(--t-hover) var(--e-out)}
+.doc a:hover{text-decoration-color:currentColor}
+.doc ul{margin:0 0 1.05rem;padding:0;list-style:none;display:flex;flex-direction:column;gap:.8rem}
+.doc ul li{position:relative;padding-left:1.5rem;color:var(--ink-2);line-height:1.65}
+.doc ul li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;
+  background:linear-gradient(140deg,var(--amber),var(--coral))}
+.doc code{font-size:.86em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:var(--surface-2);border:1px solid var(--line-2);border-radius:6px;padding:.12em .38em;
+  color:var(--ink)}
+
+/* the opening summary reads as the lede it already is */
+.doc .lede-block{border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:18px;
+  background:var(--surface);box-shadow:var(--shadow);padding:clamp(1.3rem,3vw,1.8rem);
+  position:relative;overflow:hidden}
+.doc .lede-block::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 100% 0%,color-mix(in srgb,var(--amber) 12%,transparent),transparent 60%)}
+.doc .lede-block p{position:relative;margin:0;font-size:1.04rem;line-height:1.68;color:var(--ink)}
+
+/* ---- the fifteen-event table ---- */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--surface);
+  box-shadow:var(--shadow);margin:0 0 1.05rem;-webkit-overflow-scrolling:touch}
+.doc table{border-collapse:collapse;width:100%;margin:0;font-size:.92rem;min-width:34rem}
+.doc thead th{font:600 .68rem/1.2 Manrope;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);text-align:left;padding:.95rem 1rem;background:var(--surface-2);
+  border-bottom:1px solid var(--line)}
+.doc tbody td{padding:.85rem 1rem;border-top:1px solid var(--line-2);vertical-align:top;
+  color:var(--ink-2);line-height:1.55}
+.doc tbody tr:first-child td{border-top:0}
+.doc tbody tr{transition:background var(--t-hover) var(--e-out)}
+.doc tbody tr:hover{background:var(--surface-2)}
+.doc tbody td:first-child{white-space:nowrap}
+
+/* ---- contents rail ---- */
+.toc{display:none}
+@media(min-width:1000px){
+  .toc{display:block;position:sticky;top:88px;font-size:.86rem}
+  .toc-label{font:600 .66rem/1 Manrope;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:.9rem}
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.15rem;
+    border-left:1px solid var(--line-2)}
+  .toc a{display:block;padding:.42rem 0 .42rem .9rem;margin-left:-1px;text-decoration:none;
+    color:var(--ink-3);line-height:1.4;border-left:2px solid transparent;
+    transition:color var(--t-hover) var(--e-out),border-color var(--t-hover) var(--e-out),
+      transform var(--t-hover) var(--e-out)}
+  .toc a:hover{color:var(--ink-2);transform:translateX(2px)}
+  .toc a[aria-current="true"]{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+}
+
+footer{border-top:1px solid var(--line-2);padding:2.4rem 0 3.2rem;font-size:.86rem;color:var(--ink-3)}
+.foot{display:flex;flex-wrap:wrap;gap:.8rem 1.6rem;align-items:center}
+.foot a{color:var(--ink-2);text-decoration:none;position:relative;
+  transition:color var(--t-hover) var(--e-out)}
+.foot a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform var(--t-hover) var(--e-out)}
+.foot a:hover{color:var(--accent)}
+.foot a:hover::after{transform:scaleX(1)}
+.foot .sp{margin-left:auto}
+
+@media (prefers-reduced-motion: no-preference){
+  .rv{opacity:.001;translate:0 16px;
+    transition:opacity var(--t-reveal) var(--e-out),translate var(--t-reveal) var(--e-out)}
+  .rv.in{opacity:1;translate:none}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .brand:hover,.brand:active,.back:active,.toc a:hover{transform:none}
+  .foot a::after,header::after{transition:none}
+}
+@media (prefers-reduced-transparency: reduce){
+  header,header.scrolled{background:var(--bg);backdrop-filter:none}
+  header.scrolled::after{opacity:0}
+}
+@media (prefers-contrast: more){
+  :root{--ink-2:var(--ink); --ink-3:var(--ink); --line:currentColor; --line-2:currentColor}
+  header,header.scrolled{background:var(--bg);backdrop-filter:none;border-bottom:2px solid var(--ink);box-shadow:none}
+  header.scrolled::after{opacity:0}
+  .table-wrap,.doc .lede-block,.doc .meta .bit,.back{background:var(--surface);border:2px solid var(--ink)}
+  .stamp{border:2px solid currentColor}
+  :focus-visible{outline-width:3.5px}
+}
+@media print{
+  header,footer,.toc,.aura{display:none}
+  body{background:#fff;color:#000}
+  .doc{max-width:none}
+  .rv{opacity:1!important;translate:none!important}
+  .table-wrap{box-shadow:none;overflow:visible}
+}
+</style>
+</head>
+<body>
+
+<div class="aura"></div>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="data:image/webp;base64,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" alt=""><span>beenly</span></a>
+    <a class="back" href="/">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4"/></svg>
+      <span>Back to beenly</span>
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="doc-grid">
+    <aside class="toc" id="toc" aria-label="On this page"></aside>
+    <article class="doc" id="doc">
+      <span class="stamp">Legal</span>
     <h1>Privacy Policy: beenly</h1>
     <p class="meta">
       Effective date: 2026-07-27 ·
-      Last updated: 2026-09-01 ·
+      Last updated: 2026-09-10 ·
       Contact: <a href="mailto:support@beenly.me">support@beenly.me</a>
     </p>
 
@@ -87,10 +298,8 @@
       <strong>Location (optional, off by default):</strong> if you turn on
       <strong>Settings &rarr; Privacy &rarr; "Nudge me to mark countries"</strong>, the app asks
       Android for approximate location access &mdash; that's the only kind of location access
-      beenly ever requests. (Android's permission dialog may still show a "Precise" option next
-      to "Approximate"; that's because the location library beenly uses declares support for
-      precise location in the app's permissions, but beenly's own code never asks for it and
-      never uses it.) While this is on, it checks your approximate location once each time you
+      beenly ever requests, and Android's permission dialog offers no "Precise" option for
+      it. While this is on, it checks your approximate location once each time you
       open the app (at most once every 12 hours) to see whether you're somewhere you haven't
       marked yet, and shows a one-time suggestion to mark it. That location value is held in
       memory for a moment to work out which country you're in, then discarded immediately
@@ -206,5 +415,147 @@
       Play Data safety form in the same release. The "Last updated" date above tracks the current
       version.
     </p>
-  </body>
+    </article>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div class="foot">
+    <span>© 2026 beenly</span>
+    <a href="/">Home</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="mailto:support@beenly.me">support@beenly.me</a>
+    <span class="sp">Borders: geoBoundaries CGAZ, CC BY 4.0</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var rmq = matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = rmq.matches;
+  if (rmq.addEventListener) rmq.addEventListener('change', function(e){ reduce = e.matches; });
+
+  var doc = document.getElementById('doc');
+  var heads = [].slice.call(doc.querySelectorAll('h2'));
+
+  /* Slugs are derived from the headings themselves, so a policy revision that
+     renames a section renames its anchor without anyone maintaining a list. */
+  function slug(s){
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  heads.forEach(function (h) { if (!h.id) h.id = slug(h.textContent); });
+
+  /* Contents rail: built from the document rather than hand-kept beside it. */
+  var toc = document.getElementById('toc');
+  if (heads.length > 2) {
+    var label = document.createElement('div');
+    label.className = 'toc-label';
+    label.textContent = 'On this page';
+    var ol = document.createElement('ol');
+    heads.forEach(function (h) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      ol.appendChild(li);
+    });
+    toc.appendChild(label);
+    toc.appendChild(ol);
+  }
+
+  /* A wide table must scroll inside its own box, never the page. */
+  [].forEach.call(doc.querySelectorAll('table'), function (t) {
+    if (t.parentNode.classList.contains('table-wrap')) return;
+    var box = document.createElement('div');
+    box.className = 'table-wrap';
+    box.setAttribute('tabindex', '0');
+    box.setAttribute('role', 'region');
+    box.setAttribute('aria-label', 'Usage events');
+    t.parentNode.insertBefore(box, t);
+    box.appendChild(t);
+  });
+
+  /* The opening summary is already the lede; give it the weight it reads with. */
+  var first = heads[0];
+  if (first && /short version/i.test(first.textContent)) {
+    var p = first.nextElementSibling;
+    if (p && p.tagName === 'P') {
+      var block = document.createElement('div');
+      block.className = 'lede-block';
+      p.parentNode.insertBefore(block, p);
+      block.appendChild(p);
+    }
+  }
+
+  /* "Effective date: X · Last updated: Y · Contact: Z" is one text run in the
+     source. Split it on the separator for display only - the link inside the
+     contact segment is moved, not rebuilt, so the mailto stays exactly as authored. */
+  var meta = doc.querySelector('.meta');
+  if (meta) {
+    var parts = [], cur = document.createElement('span');
+    cur.className = 'bit';
+    [].slice.call(meta.childNodes).forEach(function (n) {
+      if (n.nodeType === 3 && n.nodeValue.indexOf('·') > -1) {
+        var chunks = n.nodeValue.split('·');
+        chunks.forEach(function (c, i) {
+          if (i > 0) { parts.push(cur); cur = document.createElement('span'); cur.className = 'bit'; }
+          if (c.trim()) cur.appendChild(document.createTextNode(c.trim() + ' '));
+        });
+      } else {
+        cur.appendChild(n.cloneNode(true));
+      }
+    });
+    parts.push(cur);
+    meta.textContent = '';
+    parts.forEach(function (b) {
+      var t = b.textContent.trim();
+      if (!t) return;
+      var i = t.indexOf(':');
+      if (i > -1 && !b.querySelector('a')) {
+        var strong = document.createElement('b');
+        strong.textContent = t.slice(0, i + 1);
+        b.textContent = t.slice(i + 1).trim();
+        b.insertBefore(strong, b.firstChild);
+      }
+      meta.appendChild(b);
+    });
+  }
+
+  /* Sections arrive as you reach them; nothing stays hidden if script or the
+     observer falls short. */
+  var blocks = [].slice.call(doc.children);
+  if (!reduce && 'IntersectionObserver' in window) {
+    blocks.forEach(function (el) { el.classList.add('rv'); });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+    blocks.forEach(function (el) { io.observe(el); });
+    setTimeout(function () { blocks.forEach(function (el) { el.classList.add('in'); }); }, 1500);
+  }
+
+  /* The bar thickens its blur once the document is underneath it. */
+  var hdr = document.querySelector('header'), ticking = false;
+  var frame = function () {
+    hdr.classList.toggle('scrolled', scrollY > 8);
+    if (heads.length) {
+      var active = heads[0], i;
+      for (i = 0; i < heads.length; i++) {
+        if (heads[i].getBoundingClientRect().top <= 140) active = heads[i];
+      }
+      [].forEach.call(toc.querySelectorAll('a'), function (a) {
+        a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + active.id));
+      });
+    }
+    ticking = false;
+  };
+  addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(frame); }
+  }, { passive: true });
+  frame();
+})();
+</script>
+</body>
 </html>

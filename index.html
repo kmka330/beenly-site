@@ -876,6 +876,30 @@ window.__LAND__ = [[[54.99,24.97],[53.85,24.06],[51.28,24.3],[51.58,25.88],[50.7
   var css = getComputedStyle(document.documentElement);
   var t0 = performance.now();
 
+  /* ---- land reveal: coastlines trace themselves in on load ----
+     Same progressive-stroke idea as the routes below - a ring is walked only
+     as far as its own progress allows. Rings start in order of great-circle
+     distance from the point facing the viewer, so the drawing spreads outward
+     from the centre of the disc instead of popping in by data order. Each
+     outline eases out over its window; the fill settles in just behind it. */
+  var REVEAL_MS = 2200, REVEAL_LEAD = 260, REVEAL_WIN = 0.45, FILL_WIN = 0.25;
+  var reveal0 = null, revealDone = reduce, revealDelay = [];
+  (function(){
+    var l0 = lam * RAD, p0 = phi * RAD;
+    var fx = Math.cos(p0) * Math.cos(l0), fy = Math.cos(p0) * Math.sin(l0), fz = Math.sin(p0);
+    for (var i = 0; i < LAND.length; i++){
+      var ring = LAND[i], x = 0, y = 0, z = 0;
+      for (var j = 0; j < ring.length; j++){
+        var l = ring[j][0] * RAD, b = ring[j][1] * RAD;
+        x += Math.cos(b) * Math.cos(l); y += Math.cos(b) * Math.sin(l); z += Math.sin(b);
+      }
+      var n = Math.sqrt(x*x + y*y + z*z) || 1;
+      var d = Math.acos(Math.max(-1, Math.min(1, (x*fx + y*fy + z*fz) / n)));
+      revealDelay[i] = (d / Math.PI) * (1 - REVEAL_WIN);
+    }
+  })();
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+
   function size(){
     /* Release last run's explicit px size first: otherwise the stage measures as
        wide as the canvas we already stretched it to, and the layout can only ever
@@ -958,20 +982,37 @@ window.__LAND__ = [[[54.99,24.97],[53.85,24.06],[51.28,24.3],[51.58,25.88],[50.7
     /* Land. A ring that runs off the visible hemisphere would close across the
        sphere as a straight chord and paint a wedge, so a clipped ring is
        stroked only and the whole layer is clipped to the globe. */
+    var rp = revealDone ? 2 : reveal0 === null ? -1 : (now - reveal0 - REVEAL_LEAD) / REVEAL_MS;
+    if (rp >= 1 + FILL_WIN) revealDone = true;
     ctx.save();
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.2832); ctx.clip();
     ctx.fillStyle = 'rgba(255,243,226,.16)';
     ctx.strokeStyle = 'rgba(255,243,226,.34)';
     ctx.lineWidth = 1;
     for (var i = 0; i < LAND.length; i++){
-      var ring = LAND[i], open = false, clipped = false;
+      var ring = LAND[i], open = false, clipped = false, sp = 1, fa = 1;
+      if (!revealDone){
+        var lp = rp - revealDelay[i];
+        sp = easeOut(Math.max(0, Math.min(1, lp / REVEAL_WIN)));
+        if (sp <= 0) continue;
+        fa = Math.max(0, Math.min(1, (lp - REVEAL_WIN) / FILL_WIN));
+        fa = 1 - (1 - fa) * (1 - fa);
+      }
+      var stop = sp >= 1 ? ring.length : Math.max(2, Math.ceil(ring.length * sp));
       ctx.beginPath();
-      for (var j = 0; j < ring.length; j++){
+      for (var j = 0; j < stop; j++){
         var q3 = project(ring[j][0], ring[j][1]);
         if (!q3){ open = false; clipped = true; continue; }
         if (!open){ ctx.moveTo(q3[0], q3[1]); open = true; } else ctx.lineTo(q3[0], q3[1]);
       }
-      if (!clipped){ ctx.closePath(); ctx.fill(); }
+      if (!clipped && sp >= 1){
+        ctx.closePath();
+        if (fa > 0){
+          if (fa < 1) ctx.fillStyle = 'rgba(255,243,226,' + (0.16 * fa).toFixed(3) + ')';
+          ctx.fill();
+          if (fa < 1) ctx.fillStyle = 'rgba(255,243,226,.16)';
+        }
+      }
       ctx.stroke();
     }
     ctx.restore();
@@ -1052,15 +1093,18 @@ window.__LAND__ = [[[54.99,24.97],[53.85,24.06],[51.28,24.3],[51.58,25.88],[50.7
   }
   function loop(now){
     var dt = Math.min((now - prev) / 1000, 1 / 20); prev = now;
+    if (reveal0 === null) reveal0 = now;
     if (!dragging){
-      if (Math.abs(vel) > 1){
-        lam += vel * dt;
-        vel *= Math.pow(0.998, dt * 1000);          /* scroll-style decay, ~2s to rest */
-        idle = 0;
-      } else {
-        idle += dt;
-        if (!reduce) lam += spin * dt * Math.min(1, idle / 1.2);   /* eases back to idle spin */
-      }
+      /* Momentum and idle spin are summed, not switched: a fling bleeds away
+         on a viscous tail (time constant 0.55s) while the idle turn fades in
+         underneath it on a smoothstep, so the hand-off is one continuous curve
+         with no stop-then-restart. A fling against the spin crosses zero and
+         reverses the same way. */
+      vel *= Math.exp(-dt / 0.55);
+      if (Math.abs(vel) < 0.05) vel = 0;
+      idle += dt;
+      var u = Math.min(1, idle / 1.8), ramp = u * u * (3 - 2 * u);
+      lam += (vel + (reduce ? 0 : spin * ramp)) * dt;
     }
     draw(now);
     /* Under reduced motion, park the loop once the globe is at rest — a direct
@@ -1072,6 +1116,7 @@ window.__LAND__ = [[[54.99,24.97],[53.85,24.06],[51.28,24.3],[51.58,25.88],[50.7
   if (!reduce) startLoop();
   if (rmq.addEventListener) rmq.addEventListener('change', function(e){
     reduce = e.matches;
+    if (reduce) revealDone = true;
     if (!reduce) startLoop();
   });
 
